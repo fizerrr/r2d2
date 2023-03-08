@@ -235,6 +235,9 @@ class APIStreamClient(JsonSocket):
     def subscribeTradeStatus(self):
         self.execute(dict(command='getTradeStatus', streamSessionId=self._ssId))
 
+    def xd(self):
+        self.execute(dict(command='getCandles', streamSessionId=self._ssId,symbol='EURUSD' ))
+
     def subscribeProfits(self):
         self.execute(dict(command='getProfits', streamSessionId=self._ssId))
 
@@ -324,25 +327,14 @@ def main():
     ssid = loginResponse['streamSessionId']
     
     # second method of invoking commands
-    resp = client.commandExecute('getAllSymbols')
     
     # create & connect to Streaming socket with given ssID
     # and functions for processing ticks, trades, profit and tradeStatus
     sclient = APIStreamClient(ssId=ssid, tickFun=procTickExample, tradeFun=procTradeExample, profitFun=procProfitExample, tradeStatusFun=procTradeStatusExample)
     
-    # subscribe for trades
-    sclient.subscribeTrades()
-    
-    # subscribe for prices
-    sclient.subscribePrices(['EURUSD', 'EURGBP', 'EURJPY'])
-
-    # subscribe for profits
     sclient.subscribeProfits()
-
-    # this is an example, make it run for 5 seconds
-    time.sleep(5)
     
-    # gracefully close streaming socket
+
     sclient.disconnect()
     
     # gracefully close RR socket
