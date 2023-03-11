@@ -6,7 +6,7 @@ data = pd.read_csv('AAPL_1min_last_5_years.csv')
 
 n = 20
 max  = 2519
-dif =  5
+dif =  0
 
 data['date'] = pd.to_datetime(data['Date'], format='%Y/%m/%d')
 
@@ -19,7 +19,7 @@ average = []
 def moving_average():
     for i in range(max):
         avg = 0
-        if i>=20:
+        if i>=n:
             for j in range(n):
                 avg = avg + data['Close'][i-j]
                 # print(data['Close'][j])
