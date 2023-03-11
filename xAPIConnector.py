@@ -236,7 +236,9 @@ class APIStreamClient(JsonSocket):
         self.execute(dict(command='getTradeStatus', streamSessionId=self._ssId))
 
     def xd(self):
-        self.execute(dict(command='getCandles', streamSessionId=self._ssId,symbol='EURUSD' ))
+        self.execute(dict(command='getChartRangeRequest',symbol='EURUSD',end=1678221597949,period=1440,start=1649530413,ticks=0 ))
+
+        
 
     def subscribeProfits(self):
         self.execute(dict(command='getProfits', streamSessionId=self._ssId))
@@ -306,40 +308,43 @@ def procNewsExample(msg):
 
 def main():
 
+    
     load_dotenv()
 
     userId = os.getenv('USER_ID')
     password = os.getenv('USER_PASSWORD')
 
-    # create & connect to RR socket
     client = APIClient()
     
-    # connect to RR socket, login
     loginResponse = client.execute(loginCommand(userId=userId, password=password))
     logger.info(str(loginResponse)) 
 
-    # check if user logged in correctly
     if(loginResponse['status'] == False):
         print('Login failed. Error code: {0}'.format(loginResponse['errorCode']))
         return
 
-    # get ssId from login response
-    ssid = loginResponse['streamSessionId']
-    
-    # second method of invoking commands
-    
-    # create & connect to Streaming socket with given ssID
-    # and functions for processing ticks, trades, profit and tradeStatus
-    sclient = APIStreamClient(ssId=ssid, tickFun=procTickExample, tradeFun=procTradeExample, profitFun=procProfitExample, tradeStatusFun=procTradeStatusExample)
-    
-    sclient.subscribeProfits()
-    
 
-    sclient.disconnect()
+
+    command = 'getSymbol'
+
+    arg = {
+
+    "symbol": "ram"
     
-    # gracefully close RR socket
+    }
+
+    rsp = client.commandExecute(command,arg)
+
+
+
+    with open("response.json", "w") as outfile:
+        json.dump(rsp, outfile)
+
+    outfile.close()
+
     client.disconnect()
     
-    
+
+
 if __name__ == "__main__":
     main()	

@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# Nasze ignory
+
+response.json
+
 # Distribution / packaging
 .Python
 build/
