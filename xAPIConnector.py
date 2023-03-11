@@ -329,13 +329,13 @@ def main():
 
     arg = {
 
+
     "symbol": "ram"
-    
+
     }
 
     rsp = client.commandExecute(command,arg)
-
-
+###
 
     with open("response.json", "w") as outfile:
         json.dump(rsp, outfile)
