@@ -6,6 +6,13 @@ import ssl
 from threading import Thread
 import os
 from dotenv import load_dotenv 
+import yfinance as yf
+from bollinger_bands import get_bollinger_bands
+import pandas as pd
+import  numpy as np
+
+import matplotlib.pyplot as plt
+
 
 # set to true on debug environment only
 DEBUG = True
@@ -304,7 +311,7 @@ def procProfitExample(msg):
 # example function for processing news from Streaming socket
 def procNewsExample(msg): 
     print("NEWS: ", msg)
-    
+
 
 def main():
 
@@ -324,6 +331,41 @@ def main():
         return
 
 
+    # DATA
+
+    data_filename = "test.csv"
+
+    symbol = "AAPL"
+    interval = "1h"
+    timestap = "20h"
+
+
+    data = yf.download(symbol, interval=interval, period=timestap)
+
+    data.to_csv( data_filename  )
+    
+    ###
+
+    # Bollinger Bands
+    #data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
+
+    symbol = 'AAPL'
+    data = pd.read_csv( data_filename  )
+    data.index = np.arange(data.shape[0])
+    closing_prices = data['Close']
+
+    bollinger_up, bollinger_down = get_bollinger_bands(closing_prices)
+
+    ###
+
+
+
+    x=data['Datetime']
+    y=data['Close']
+
+    plt.plot(x,y)
+    plt.show()
+
 
     command = 'getSymbol'
 
@@ -341,6 +383,14 @@ def main():
         json.dump(rsp, outfile)
 
     outfile.close()
+
+
+
+
+
+
+
+
 
     client.disconnect()
     
