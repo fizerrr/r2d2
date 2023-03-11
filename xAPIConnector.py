@@ -308,34 +308,33 @@ def procNewsExample(msg):
 
 def main():
 
+    
     load_dotenv()
 
     userId = os.getenv('USER_ID')
     password = os.getenv('USER_PASSWORD')
 
-    # create & connect to RR socket
     client = APIClient()
     
-    # connect to RR socket, login
     loginResponse = client.execute(loginCommand(userId=userId, password=password))
     logger.info(str(loginResponse)) 
 
-    # check if user logged in correctly
     if(loginResponse['status'] == False):
         print('Login failed. Error code: {0}'.format(loginResponse['errorCode']))
         return
 
 
-### tak robimy komendy
 
     command = 'getSymbol'
 
     arg = {
+
+
     "symbol": "ram"
+
     }
 
     rsp = client.commandExecute(command,arg)
-
 ###
 
     with open("response.json", "w") as outfile:
@@ -343,10 +342,9 @@ def main():
 
     outfile.close()
 
-
-
     client.disconnect()
     
-    
+
+
 if __name__ == "__main__":
     main()	
