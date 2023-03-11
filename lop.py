@@ -4,15 +4,6 @@ import logging
 import time
 import ssl
 from threading import Thread
-import os
-from dotenv import load_dotenv 
-import yfinance as yf
-from bollinger_bands import get_bollinger_bands
-import pandas as pd
-import  numpy as np
-
-import matplotlib.pyplot as plt
-
 
 # set to true on debug environment only
 DEBUG = True
@@ -242,11 +233,6 @@ class APIStreamClient(JsonSocket):
     def subscribeTradeStatus(self):
         self.execute(dict(command='getTradeStatus', streamSessionId=self._ssId))
 
-    def xd(self):
-        self.execute(dict(command='getChartRangeRequest',symbol='EURUSD',end=1678221597949,period=1440,start=1649530413,ticks=0 ))
-
-        
-
     def subscribeProfits(self):
         self.execute(dict(command='getProfits', streamSessionId=self._ssId))
 
@@ -311,95 +297,57 @@ def procProfitExample(msg):
 # example function for processing news from Streaming socket
 def procNewsExample(msg): 
     print("NEWS: ", msg)
-
+    
 
 def main():
 
-    
-    load_dotenv()
 
-    userId = os.getenv('USER_ID')
-    password = os.getenv('USER_PASSWORD')
+    USER_ID='14452667'
+    USER_PASSWORD='-6-5Ge3hwsS@p-r'
+    # enter your login credentials here
+    userId = USER_ID
+    password = USER_PASSWORD
 
+    # create & connect to RR socket
     client = APIClient()
     
+    # connect to RR socket, login
     loginResponse = client.execute(loginCommand(userId=userId, password=password))
     logger.info(str(loginResponse)) 
 
+    # check if user logged in correctly
     if(loginResponse['status'] == False):
         print('Login failed. Error code: {0}'.format(loginResponse['errorCode']))
         return
 
+    # get ssId from login response
+    ssid = loginResponse['streamSessionId']
     
-
-    # DATA
-
-    # data_filename = "test.csv"
-
-    # symbol = "AAPL"
-    # interval = "1m"
-    # timestap = "1h"
-
-
-    # data = yf.download(symbol, interval=interval, period=timestap)
-
-    # data.to_csv( data_filename  )
+    # second method of invoking commands
+    resp = client.commandExecute('getAllSymbols')
     
-    # ###
-
-    # # Bollinger Bands
-    # #data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
-
-    # symbol = 'AAPL'
-    # data = pd.read_csv( data_filename  )
-    # data.index = np.arange(data.shape[0])
-    # closing_prices = data['Close']
-
-    # bollinger_up, bollinger_down = get_bollinger_bands(closing_prices)
-
-    # ###
-
-
-
-    # x=data['Datetime']
-    # y=data['Close']
-
-    # plt.plot(x,y,x,bollinger_up,x,bollinger_down)
-    # plt.show()
-
-
-    command = 'getChartLastRequest'
-
-    arg = {
-
-     "info": {
-            "period": 5,
-            "start": 1678388191070,
-            "symbol": "AAPL.US_9"
-        }
+    # create & connect to Streaming socket with given ssID
+    # and functions for processing ticks, trades, profit and tradeStatus
+    sclient = APIStreamClient(ssId=ssid, tickFun=procTickExample, tradeFun=procTradeExample, profitFun=procProfitExample, tradeStatusFun=procTradeStatusExample)
     
-    }
+    # subscribe for trades
+    sclient.subscribeTrades()
+    
+    # subscribe for prices
+    sclient.subscribePrices(['EURUSD', 'EURGBP', 'EURJPY'])
 
-    rsp = client.commandExecute(command,arg)
+    # subscribe for profits
+    sclient.subscribeProfits()
 
-
-
-    with open("response.json", "w") as outfile:
-        json.dump(rsp, outfile)
-
-    outfile.close()
-
-
-
-
-
-
-
-
-
+    # this is an example, make it run for 5 seconds
+    time.sleep(5)
+    
+    # gracefully close streaming socket
+    sclient.disconnect()
+    
+    # gracefully close RR socket
     client.disconnect()
     
-
-
+    
 if __name__ == "__main__":
     main()	
