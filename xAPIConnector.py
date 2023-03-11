@@ -336,8 +336,8 @@ def main():
     data_filename = "test.csv"
 
     symbol = "AAPL"
-    interval = "1h"
-    timestap = "20h"
+    interval = "1m"
+    timestap = "1h"
 
 
     data = yf.download(symbol, interval=interval, period=timestap)
@@ -363,7 +363,7 @@ def main():
     x=data['Datetime']
     y=data['Close']
 
-    plt.plot(x,y)
+    plt.plot(x,y,x,bollinger_up,x,bollinger_down)
     plt.show()
 
 
