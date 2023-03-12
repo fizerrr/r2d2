@@ -8,7 +8,7 @@ data = data.set_index(pd.DatetimeIndex(data['Date'].values))
 
 n = 20
 max  = 2519
-dif =  5
+dif =  0
 
 
 x=data['Date'][:max]
@@ -19,7 +19,7 @@ average = []
 def moving_average():
     for i in range(max):
         avg = 0
-        if i>=20:
+        if i>=n:
             for j in range(n):
                 avg = avg + data['Close'][i-j]
                 # print(data['Close'][j])

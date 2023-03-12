@@ -306,9 +306,3 @@ def procProfitExample(msg):
 def procNewsExample(msg): 
     print("NEWS: ", msg)
 
-
-
-
-
-    
-
