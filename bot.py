@@ -33,14 +33,42 @@ def main():
     
 
     command = 'getChartLastRequest'
-
+    command1 = 'tradeTransaction'
+    arg1= {
+        "tradeTransInfo": {
+            "cmd": 0,
+            "customComment": "Some text",
+            "expiration": 0,
+            "order": 0,
+            "price": 1.4,
+            "sl": 0,
+            "tp": 0,
+            "symbol": "BITCOIN",
+            "type": 0,
+            "volume": 0.05
+        }
+    }
+    arg2= {
+        "tradeTransInfo": {
+            "cmd": 1,
+            "customComment": "Some text",
+            "expiration": 0,
+            "order": 0,
+            "price": 1.4,
+            "sl": 0,
+            "tp": 0,
+            "symbol": "BITCOIN",
+            "type": 0,
+            "volume": 0.05
+        }
+    }
 
     arg = {
 
      "info": {
-            "period": 1440,
-            "start": delay_time(days=200),
-            "symbol": "AAPL.US_9"
+            "period": 5,
+            "start": delay_time(days=7),
+            "symbol": "BITCOIN"
         }
     
     }
@@ -75,8 +103,11 @@ def main():
 
         if data['close'][19]==bollinger_down[19]:
              buy = 1
+             client.commandExecute(command1,arg1)
         else:
              buy = 0
+        if data['close'][19]==bollinger_up[19]:
+             client.commandExecute(command1,arg2)
 
         print(buy)
         if step_mode == True:
