@@ -4,13 +4,12 @@ import pandas as pd
 import numpy as np
 
 data = pd.read_csv('AAPL_1min_last_5_years.csv')
-# data = data.set_index(pd.DatetimeIndex(data['Date'].values))
+data = data.set_index(pd.DatetimeIndex(data['Date'].values))
 
 n = 20
 max  = 2519
 dif =  5
 
-# data['Date'] = pd.to_datetime(data['Date'], format='%Y-%m-%d %H:%M:%S')
 
 x=data['Date'][:max]
 y=data['Close'][:max]

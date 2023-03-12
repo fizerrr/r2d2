@@ -4,14 +4,8 @@ import logging
 import time
 import ssl
 from threading import Thread
-import os
-from dotenv import load_dotenv 
-import yfinance as yf
-from bollinger_bands import get_bollinger_bands
-import pandas as pd
-import  numpy as np
-
 import matplotlib.pyplot as plt
+
 
 
 # set to true on debug environment only
@@ -313,93 +307,8 @@ def procNewsExample(msg):
     print("NEWS: ", msg)
 
 
-def main():
 
-    
-    load_dotenv()
 
-    userId = os.getenv('USER_ID')
-    password = os.getenv('USER_PASSWORD')
-
-    client = APIClient()
-    
-    loginResponse = client.execute(loginCommand(userId=userId, password=password))
-    logger.info(str(loginResponse)) 
-
-    if(loginResponse['status'] == False):
-        print('Login failed. Error code: {0}'.format(loginResponse['errorCode']))
-        return
 
     
 
-    # DATA
-
-    # data_filename = "test.csv"
-
-    # symbol = "AAPL"
-    # interval = "1m"
-    # timestap = "1h"
-
-
-    # data = yf.download(symbol, interval=interval, period=timestap)
-
-    # data.to_csv( data_filename  )
-    
-    # ###
-
-    # # Bollinger Bands
-    # #data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
-
-    # symbol = 'AAPL'
-    # data = pd.read_csv( data_filename  )
-    # data.index = np.arange(data.shape[0])
-    # closing_prices = data['Close']
-
-    # bollinger_up, bollinger_down = get_bollinger_bands(closing_prices)
-
-    # ###
-
-
-
-    # x=data['Datetime']
-    # y=data['Close']
-
-    # plt.plot(x,y,x,bollinger_up,x,bollinger_down)
-    # plt.show()
-
-
-    command = 'getChartLastRequest'
-
-    arg = {
-
-     "info": {
-            "period": 5,
-            "start": 1678388191070,
-            "symbol": "AAPL.US_9"
-        }
-    
-    }
-
-    rsp = client.commandExecute(command,arg)
-
-
-
-    with open("response.json", "w") as outfile:
-        json.dump(rsp, outfile)
-
-    outfile.close()
-
-
-
-
-
-
-
-
-
-    client.disconnect()
-    
-
-
-if __name__ == "__main__":
-    main()	
