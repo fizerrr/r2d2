@@ -3,16 +3,16 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 
-data = pd.read_csv('AAPL_1min_last_5_years.csv')
-data = data.set_index(pd.DatetimeIndex(data['Date'].values))
+data = pd.read_csv('data/output.csv')
+data = data.set_index(pd.DatetimeIndex(data['ctmString'].values))
 
 # Period set
 period =  14
 
-typical_price = (data['Close'] + data['High'] + data['Low']) / 3
+typical_price = (data['close'] + data['high'] + data['low']) / 3
 
 
-money_flow = typical_price * data['Volume']
+money_flow = typical_price * data['vol']
 money_flow
 
 
@@ -54,11 +54,11 @@ mfi_data['MFI'] = mfi
 
 
 plt.figure(figsize=(12.2,4.5))
-plt.plot( mfi_data['MFI'],  label='MFI')
-plt.axhline(10, linestyle='--', color = 'orange')  
+plt.plot(data['ctmString'][:123],mfi_data['MFI'], data['ctmString'],data['close'])
+plt.axhline(30, linestyle='--', color = 'orange')  
 plt.axhline(20, linestyle='--',color = 'blue')  
 plt.axhline(80, linestyle='--', color = 'blue') 
-plt.axhline(90, linestyle='--', color = 'orange')  
+plt.axhline(70, linestyle='--', color = 'orange')  
 plt.title('MFI')
 
 plt.legend(mfi_data.columns.values, loc='upper left')
