@@ -6,6 +6,7 @@ import ssl
 from threading import Thread
 import os
 from dotenv import load_dotenv 
+from unixcalculator import to_unix_time_ms
 
 # set to true on debug environment only
 DEBUG = True
@@ -325,15 +326,17 @@ def main():
 
 
 
-    command = 'getSymbol'
-
+    command = 'getChartLastRequest'
+    date_str='2023-03-10 10:00:00'
+    unix_time_ms = to_unix_time_ms(date_str)
     arg = {
 
-
-    "symbol": "ram"
-
+    "info": {
+            "period": 1,
+            "start": unix_time_ms,
+            "symbol": "EURUSD"
+        }
     }
-
     rsp = client.commandExecute(command,arg)
 ###
 
@@ -341,9 +344,10 @@ def main():
         json.dump(rsp, outfile)
 
     outfile.close()
-
+    
     client.disconnect()
     
+
 
 
 if __name__ == "__main__":
