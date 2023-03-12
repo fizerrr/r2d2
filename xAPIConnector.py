@@ -4,9 +4,9 @@ import logging
 import time
 import ssl
 from threading import Thread
-import os
-from dotenv import load_dotenv 
-from unixcalculator import to_unix_time_ms
+import matplotlib.pyplot as plt
+
+
 
 # set to true on debug environment only
 DEBUG = True
@@ -305,50 +305,4 @@ def procProfitExample(msg):
 # example function for processing news from Streaming socket
 def procNewsExample(msg): 
     print("NEWS: ", msg)
-    
 
-def main():
-
-    
-    load_dotenv()
-
-    userId = os.getenv('USER_ID')
-    password = os.getenv('USER_PASSWORD')
-
-    client = APIClient()
-    
-    loginResponse = client.execute(loginCommand(userId=userId, password=password))
-    logger.info(str(loginResponse)) 
-
-    if(loginResponse['status'] == False):
-        print('Login failed. Error code: {0}'.format(loginResponse['errorCode']))
-        return
-
-
-
-    command = 'getChartLastRequest'
-    date_str='2023-03-10 10:00:00'
-    unix_time_ms = to_unix_time_ms(date_str)
-    arg = {
-
-    "info": {
-            "period": 1,
-            "start": unix_time_ms,
-            "symbol": "EURUSD"
-        }
-    }
-    rsp = client.commandExecute(command,arg)
-###
-
-    with open("response.json", "w") as outfile:
-        json.dump(rsp, outfile)
-
-    outfile.close()
-    
-    client.disconnect()
-    
-
-
-
-if __name__ == "__main__":
-    main()	

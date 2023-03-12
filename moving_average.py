@@ -1,14 +1,14 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pandas as pd
+import numpy as np
 
 data = pd.read_csv('AAPL_1min_last_5_years.csv')
+data = data.set_index(pd.DatetimeIndex(data['Date'].values))
 
 n = 20
 max  = 2519
 dif =  0
-
-data['date'] = pd.to_datetime(data['Date'], format='%Y/%m/%d')
 
 
 x=data['Date'][:max]
@@ -28,9 +28,7 @@ def moving_average():
         else:
             average.append(0)
 
-
 moving_average()
-
 
 average_1 = []
 average_2 = []
@@ -38,8 +36,6 @@ average_2 = []
 for i in average:
     average_1.append(i + dif)
     average_2.append(i - dif)
-
-
 
 plt.plot(x,y,x,average_1,x,average_2)
 plt.show()
