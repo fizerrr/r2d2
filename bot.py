@@ -69,7 +69,35 @@ def main():
 
 
     command = 'getChartLastRequest'
-
+    command1 = 'tradeTransaction'
+    arg1= {
+        "tradeTransInfo": {
+            "cmd": 0,
+            "customComment": "Some text",
+            "expiration": 0,
+            "order": 0,
+            "price": 1.4,
+            "sl": 0,
+            "tp": 0,
+            "symbol": "BITCOIN",
+            "type": 0,
+            "volume": 0.05
+        }
+    }
+    arg2= {
+        "tradeTransInfo": {
+            "cmd": 1,
+            "customComment": "Some text",
+            "expiration": 0,
+            "order": 0,
+            "price": 1.4,
+            "sl": 0,
+            "tp": 0,
+            "symbol": "BITCOIN",
+            "type": 0,
+            "volume": 0.05
+        }
+    }
 
     arg = {
 
