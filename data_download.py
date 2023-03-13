@@ -9,4 +9,4 @@ interval = "1m"
 data = yf.download(symbol, interval=interval, period="7d")
 
 # Save the data to a CSV file
-data.to_csv("data/AAPL_1min_last_5_years.csv")
+data.to_csv("data/AAPL_1min_last_7_days.csv")
