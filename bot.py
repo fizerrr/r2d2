@@ -37,6 +37,7 @@ def main():
     command_tradeTransaction = 'tradeTransaction'
 
     command_getChartLastRequest = 'getChartLastRequest'
+    symbol = "ALGORAND"
 
     arg_buy= {
         "tradeTransInfo": {
@@ -47,7 +48,7 @@ def main():
             "price": 1.4,
             "sl": 0,
             "tp": 0,
-            "symbol": "BITCOIN",
+            "symbol": symbol,
             "type": 0,
             "volume": 0.05
         }
@@ -61,7 +62,7 @@ def main():
             "price": 1.4,
             "sl": 0,
             "tp": 0,
-            "symbol": "BITCOIN",
+            "symbol": symbol,
             "type": 0,
             "volume": 0.05
         }
@@ -77,7 +78,7 @@ def main():
             "price": 1.4,
             "sl": 0,
             "tp": 0,
-            "symbol": "BITCOIN",
+            "symbol": symbol,
             "type": 0,
             "volume": 0.05
         }
@@ -91,7 +92,7 @@ def main():
             "price": 1.4,
             "sl": 0,
             "tp": 0,
-            "symbol": "BITCOIN",
+            "symbol": symbol,
             "type": 0,
             "volume": 0.05
         }
@@ -102,7 +103,7 @@ def main():
      "info": {
             "period": 1440,
             "start": delay_time(days=50),
-            "symbol": "BITCOIN"
+            "symbol": symbol
         }
     
     }
@@ -112,7 +113,7 @@ def main():
 
         "level": 0,
         "symbols": [
-            "BITCOIN",
+            symbol,
         ],
         "timestamp": delay_time(days=0)
     }
