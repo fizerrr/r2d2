@@ -9,7 +9,7 @@ __pycache__/
 # Nasze ignory
 .idea
 response.json
-
+getallsymbols.json
 # Distribution / packaging
 .Python
 build/
